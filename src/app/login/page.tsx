@@ -1,10 +1,9 @@
 import LoginForm from "@/components/login/LoginForm";
 
-export default function Home() {
+export default function RegisterPage() {
   return (
     <div>
-      <LoginForm/>
-     
+      <LoginForm />
     </div>
   );
 }
