@@ -12,18 +12,31 @@ interface MenuItem {
   rating: number;
 }
 
-const Menu = () => {
+interface MenuProps {
+  searchTerm: string;
+}
+
+const Menu = ({ searchTerm }: MenuProps) => {
   const [menu, setMenu] = useState<MenuItem[]>([]);
   const [quantities, setQuantities] = useState<{ [key: number]: number }>({});
 
   useEffect(() => {
     const fetchMenu = async () => {
-      const res = await fetch("/api/menu");
-      const data = await res.json();
-      setMenu(data);
+      try {
+        const res = await fetch("/api/menu");
+        const data = await res.json();
+        setMenu(data);
+      } catch (error) {
+        console.error("No items found! Please try again later.");
+        return;
+      }
     };
     fetchMenu();
-  }, []);
+  }, [searchTerm, menu]);
+
+  const filteredMenu = menu.filter((item) =>
+    item.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   const handleQuantityChange = (id: number, delta: number) => {
     setQuantities((prev) => ({
@@ -34,7 +47,7 @@ const Menu = () => {
 
   return (
     <div className="p-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-      {menu.map((item) => (
+      {filteredMenu.map((item) => (
         <div
           key={item.id}
           className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden transition-transform hover:-translate-y-1"
