@@ -1,14 +1,17 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import Navbar from "./Navbar";
 import Menu from "../MenuPage/Menu";
 
 const MainPage = () => {
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
+
   return (
-    <div className="min-h-screen bg-gray-100 dark:bg-gray-900 text-black dark:text-white transition-colors duration-300">
-      <Navbar />
-      <Menu/>
+    <div>
+      <Navbar searchTerm={searchTerm} setSearchTerm={setSearchQuery} />
+      <Menu searchTerm={searchQuery} />
     </div>
   );
 };
