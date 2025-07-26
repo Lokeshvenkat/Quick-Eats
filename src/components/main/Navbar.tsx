@@ -4,6 +4,8 @@ import React, { useState, useEffect } from "react";
 import { FaSun, FaMoon } from "react-icons/fa";
 import { FiUser } from "react-icons/fi";
 import { BsCart } from "react-icons/bs";
+import { useCart } from "@/components/cart/CartContext";
+import { useRouter } from "next/navigation";
 
 interface NavbarProps {
   searchTerm: string;
@@ -13,6 +15,10 @@ interface NavbarProps {
 const Navbar: React.FC<NavbarProps> = ({ searchTerm, setSearchTerm }) => {
   const [isDark, setIsDark] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const { cartCount } = useCart();
+  const router = useRouter();
+
+
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
@@ -37,13 +43,15 @@ const Navbar: React.FC<NavbarProps> = ({ searchTerm, setSearchTerm }) => {
         />
       </div>
 
-      <div className="flex items-center space-x-6">
+      <div className="flex items-center space-x-6" onClick={() => router.push("/cart")}>
         {/* Cart Icon with count */}
-        <div className="relative">
+        <div className="relative cursor-pointer">
           <BsCart className="text-xl text-gray-700 dark:text-white" />
+           {cartCount > 0 && (
           <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs px-1.5 py-0.5 rounded-full">
-            0
+              {cartCount}
           </span>
+           )}
         </div>
 
         {/* Theme Toggle */}

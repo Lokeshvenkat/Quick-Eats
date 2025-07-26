@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
+import { useCart } from "@/components/cart/CartContext";
 
 interface MenuItem {
   id: number;
@@ -19,6 +20,7 @@ interface MenuProps {
 const Menu = ({ searchTerm }: MenuProps) => {
   const [menu, setMenu] = useState<MenuItem[]>([]);
   const [quantities, setQuantities] = useState<{ [key: number]: number }>({});
+  const { addToCart } = useCart();
 
   useEffect(() => {
     const fetchMenu = async () => {
@@ -38,12 +40,17 @@ const Menu = ({ searchTerm }: MenuProps) => {
     item.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const handleQuantityChange = (id: number, delta: number) => {
-    setQuantities((prev) => ({
+const handleQuantityChange = (id: number, delta: number) => {
+  setQuantities((prev) => {
+    const currentQty = prev[id] ?? 1; 
+    const newQty = currentQty + delta;
+    return {
       ...prev,
-      [id]: Math.max(1, (prev[id] || 1) + delta),
-    }));
-  };
+      [id]: Math.max(1, Math.min(newQty, 10)), 
+    };
+  });
+};
+
 
   return (
     <div className="p-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -84,11 +91,22 @@ const Menu = ({ searchTerm }: MenuProps) => {
               </span>
               <button
                 onClick={() => handleQuantityChange(item.id, 1)}
+                 disabled={(quantities[item.id] || 1) >= 10}
                 className="px-2 py-1 bg-gray-200 dark:bg-gray-600 rounded"
               >
                 +
               </button>
-              <button className="ml-auto bg-blue-600 hover:bg-blue-700 text-white px-4 py-1 rounded">
+              <button className="ml-auto bg-blue-600 hover:bg-blue-700 text-white px-4 py-1 rounded"
+              onClick={() =>
+              addToCart({
+              id: item.id.toString(),
+              name: item.name,
+              price: item.price,
+              quantity: Math.min(quantities[item.id] || 1, 10),
+              image:item.image, 
+    })
+  }
+                >
                 Add to Cart
               </button>
             </div>

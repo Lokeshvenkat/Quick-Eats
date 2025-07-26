@@ -37,7 +37,7 @@ const LoginForm = () => {
       style={{ backgroundImage: "url('/home.jpg')" }}
     >
       {/* Login Form Card */}
-      <div className="bg-grey bg-opacity-90 p-8 rounded-lg shadow-md w-full max-w-md">
+      <div className="bg-zinc-100 bg-opacity-90 p-8 rounded-lg shadow-md w-full max-w-md">
         <h1 className="text-4xl font-bold text-center text-blue-600 drop-shadow my-6">
           Welcome to Quick Eats
         </h1>

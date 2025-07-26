@@ -33,11 +33,11 @@ const RegisterForm = () => {
 
   return (
     <div
-      className="h-screen bg-cover bg-center flex justify-center items-cente"
+      className="h-screen bg-cover bg-center flex justify-center items-center"
       style={{ backgroundImage: "url('/home.jpg')" }}
     >
       {/* Right: Login Form */}
-      <div className="bg-gray bg-opacity-90 p-8 rounded-lg shadow-md w-full max-w-md">
+      <div className="bg-zinc-100 bg-opacity-90 p-8 rounded-lg shadow-md w-full max-w-md">
         <h1 className="text-4xl md:text-5xl font-bold text-center text-blue-600 drop-shadow-lg my-8">
           Welcome to Quick Eats
         </h1>
@@ -117,7 +117,7 @@ const RegisterForm = () => {
               value={password}
               onChange={(e) => SetPassword(e.target.value)}
               autoComplete="off"
-              className="w-full border border-gray-300 rounded-md py-2 px-3 focus:outline-none focus:border-blue-500 text-black"
+              className="w-full border border-gray-600 rounded-md py-2 px-3 focus:outline-none focus:border-blue-500 text-black"
               required
             />
           </div>
@@ -133,8 +133,9 @@ const RegisterForm = () => {
 
         {/* Signup Link */}
         <div className="mt-6 text-blue-500 text-center">
+          Already have an account?{" "}
           <Link href="./login" className="hover:underline">
-            Already have an account? Login Here
+              Login Here
           </Link>
         </div>
         <div>
