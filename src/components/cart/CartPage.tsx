@@ -1,10 +1,14 @@
 "use client";
 import { useCart } from "@/components/cart/CartContext";
+import { Router, useRouter } from "next/router";
 
 const CartPage = () => {
   const { cart, updateQuantity, clearCart } = useCart();
 
-  const subtotal = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
+  const subtotal = cart.reduce(
+    (acc, item) => acc + item.price * item.quantity,
+    0
+  );
   const taxes = parseFloat((subtotal * 0.1).toFixed(2));
   const shipping = 0;
   const total = subtotal + taxes + shipping;
@@ -55,7 +59,9 @@ const CartPage = () => {
                           >
                             -
                           </button>
-                          <span className="text-center w-8">{item.quantity}</span>
+                          <span className="text-center w-8">
+                            {item.quantity}
+                          </span>
                           <button
                             className="border rounded-md py-2 px-4 ml-2"
                             onClick={() => handleQuantityChange(item.id, 1)}
@@ -73,7 +79,9 @@ const CartPage = () => {
                 <button
                   className="mt-4 bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded"
                   onClick={() => {
-                    if (window.confirm("Are you sure you want to clear the cart?")) {
+                    if (
+                      window.confirm("Are you sure you want to clear the cart?")
+                    ) {
                       clearCart();
                     }
                   }}
