@@ -1,8 +1,6 @@
 "use client";
-import { useCart } from "./CartContext";
-import Image from "next/image";
-import { useRouter } from "next/navigation";
-import CheckoutPage from "../checkout/CheckoutPage";
+import { useCart } from "@/components/cart/CartContext";
+import { Router, useRouter } from "next/router";
 
 const CartPage = () => {
   const { cart, clearCart, updateQuantity } = useCart();
@@ -14,6 +12,20 @@ const CartPage = () => {
     if (confirmClear) clearCart();
   };
 
+  const subtotal = cart.reduce(
+    (acc, item) => acc + item.price * item.quantity,
+    0
+  );
+  const taxes = parseFloat((subtotal * 0.1).toFixed(2));
+  const shipping = 0;
+  const total = subtotal + taxes + shipping;
+
+  const handleQuantityChange = (id: string, delta: number) => {
+    const item = cart.find((item) => item.id === id);
+    if (!item) return;
+    const newQuantity = Math.max(1, item.quantity + delta);
+    updateQuantity(id, newQuantity);
+  };
   const subtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
   const taxes = subtotal * 0.2; 
   const delivery = subtotal === 0 ? 0 : subtotal > 499 ? 0 : 100;
@@ -71,7 +83,9 @@ const CartPage = () => {
                           >
                             -
                           </button>
-                          <span className="text-black text-center w-8 text-black">{item.quantity}</span>
+                          <span className="text-center w-8">
+                            {item.quantity}
+                          </span>
                           <button
                             onClick={() => updateQuantity(item.id, item.quantity + 1)}
                             className="border rounded-md py-1 px-3 ml-2 cursor-pointer"
@@ -85,12 +99,20 @@ const CartPage = () => {
                   ))}
                 </tbody>
               </table>
-              <button
-                onClick={handleClearCart}
-                className="mt-6 bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded cursor-pointer"
-              >
-                Clear Cart
-              </button>
+              {cart.length > 0 && (
+                <button
+                  className="mt-4 bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded"
+                  onClick={() => {
+                    if (
+                      window.confirm("Are you sure you want to clear the cart?")
+                    ) {
+                      clearCart();
+                    }
+                  }}
+                >
+                  Clear Cart
+                </button>
+              )}
             </div>
           </div>
 
