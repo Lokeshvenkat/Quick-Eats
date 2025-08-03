@@ -1,9 +1,11 @@
 "use client"
 
 import React, { useState } from "react";
+import { useRouter } from "next/navigation";
 
 const CheckoutPage: React.FC = () => {
   const [paymentMethod, setPaymentMethod] = useState("card");
+   const router = useRouter();
    
 
   const isCash = paymentMethod === "cash";
@@ -105,7 +107,8 @@ const CheckoutPage: React.FC = () => {
               <>
                 <div className="mt-4">
                   <label htmlFor="card_number" className="block text-gray-700 dark:text-white mb-1">Card Number</label>
-                  <input type="text" id="card_number" className="w-full rounded-lg border py-2 px-3 dark:bg-gray-700 dark:text-white dark:border-none" />
+                 <input type="text" id="card_number" inputMode="numeric" pattern="[0-9]*" maxLength={16} placeholder="0000 0000 0000 0000"
+                  className="w-full rounded-lg border py-2 px-3 dark:bg-gray-700 dark:text-white dark:border-none"/>
                 </div>
 
                  <div className="mt-4">
@@ -116,11 +119,12 @@ const CheckoutPage: React.FC = () => {
                 <div className="grid grid-cols-2 gap-4 mt-4">
                   <div>
                     <label htmlFor="exp_date" className="block text-gray-700 dark:text-white mb-1">Expiration Date</label>
-                    <input type="text" id="exp_date" className="w-full rounded-lg border py-2 px-3 dark:bg-gray-700 dark:text-white dark:border-none" />
+                    <input  type="text" id="card_number" inputMode="numeric" pattern="^(0[1-9]|1[0-2])\/\d{2}$" maxLength={4} placeholder="mm/yy"
+                    className="w-full rounded-lg border py-2 px-3 dark:bg-gray-700 dark:text-white dark:border-none" />
                   </div>
                   <div>
                     <label htmlFor="cvv" className="block text-gray-700 dark:text-white mb-1">CVV</label>
-                    <input type="text" id="cvv" className="w-full rounded-lg border py-2 px-3 dark:bg-gray-700 dark:text-white dark:border-none" />
+                    <input type="password" id="cvv"  maxLength={3} className="w-full rounded-lg border py-2 px-3 dark:bg-gray-700 dark:text-white dark:border-none" />
                   </div>
                 </div>
               </>
@@ -142,7 +146,9 @@ const CheckoutPage: React.FC = () => {
 
           {/* Place Order Button */}
           <div className="mt-8 flex justify-end">
-            <button className="bg-teal-500 text-white px-4 py-2 rounded-lg hover:bg-teal-700 dark:bg-teal-600 dark:hover:bg-teal-900">
+            <button className="bg-teal-500 text-white px-4 py-2 rounded-lg hover:bg-teal-700 dark:bg-teal-600 dark:hover:bg-teal-900"
+             onClick={() => router.push("/thanks")}
+            >
               Place Order {isCash && <span>(+₹{serviceCharge})</span>}
             </button>
           </div>
